@@ -1,0 +1,59 @@
+---
+- name: Install Docker and components
+  ansible.builtin.dnf:
+    name:
+      - docker
+    state: present
+
+- name: Start and enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Ensure ec2-user is in the docker group
+  ansible.builtin.user:
+    name: ec2-user
+    groups: docker
+    append: true
+
+- name: Create web app directory
+  ansible.builtin.file:
+    path: /opt/webapp
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Generate custom index.html from Ansible template
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /opt/webapp/index.html
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Run custom dashboard Nginx container
+  ansible.builtin.shell: |
+    docker rm -f practice-dashboard || true
+    docker run -d --name practice-dashboard --restart unless-stopped -p 8080:80 -v /opt/webapp:/usr/share/nginx/html:ro nginx:alpine
+  args:
+    executable: /bin/bash
+  register: docker_app_dashboard_run_output
+  changed_when: "'Error' not in docker_app_dashboard_run_output.stderr"
+
+- name: Run cAdvisor container for container metrics
+  ansible.builtin.shell: |
+    docker rm -f cadvisor || true
+    docker run -d \
+      --name cadvisor \
+      --restart unless-stopped \
+      -p 8081:8080 \
+      --volume=/var/run:/var/run:ro \
+      --volume=/sys:/sys:ro \
+      --volume=/var/lib/docker/:/var/lib/docker:ro \
+      gcr.io/cadvisor/cadvisor:latest
+  args:
+    executable: /bin/bash
+  register: docker_app_cadvisor_run_output
+  changed_when: "'Error' not in cdocker_app_cadvisor_run_output.stderr"
