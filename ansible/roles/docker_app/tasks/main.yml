@@ -39,8 +39,8 @@
     docker run -d --name practice-dashboard --restart unless-stopped -p 8080:80 -v /opt/webapp:/usr/share/nginx/html:ro nginx:alpine
   args:
     executable: /bin/bash
-  register: docker_run_output
-  changed_when: "'Error' not in docker_run_output.stderr"
+  register: docker_app_dashboard_run_output
+  changed_when: "'Error' not in docker_app_dashboard_run_output.stderr"
 
 - name: Run cAdvisor container for container metrics
   ansible.builtin.shell: |
@@ -55,5 +55,5 @@
       gcr.io/cadvisor/cadvisor:latest
   args:
     executable: /bin/bash
-  register: cadvisor_run_output
-  changed_when: "'Error' not in cadvisor_run_output.stderr"
+  register: docker_app_cadvisor_run_output
+  changed_when: "'Error' not in cdocker_app_cadvisor_run_output.stderr"
