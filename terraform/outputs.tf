@@ -10,5 +10,5 @@ output "selected_t3_micro_azs" {
 
 output "instance_public_ip" {
   description = "Public IP of instance"
-  value = aws_instance.public_web.public_ip
+  value       = aws_instance.public_web.public_ip
 }
