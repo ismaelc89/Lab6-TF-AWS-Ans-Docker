@@ -1,0 +1,10 @@
+---
+- name: Install Docker
+  hosts: tag_public_instance
+  become: true
+  roles:
+    - swap
+    - docker_app
+    - node_exporter
+    - prometheus
+    - grafana

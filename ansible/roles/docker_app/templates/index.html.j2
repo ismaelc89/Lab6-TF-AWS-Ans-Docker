@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Public Node Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding-top: 50px; }
+        .card { background: #1e293b; max-width: 500px; margin: auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        h1 { color: #38bdf8; }
+        .metric { font-family: monospace; background: #334155; padding: 8px; border-radius: 6px; margin: 10px 0; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 Public Node Online</h1>
+        <p>Managed seamlessly via Ansible & Docker</p>
+        <hr style="border: 0; border-top: 1px solid #475569; margin: 20px 0;">
+        <p><strong>Hostname:</strong> <br><span class="metric">{{ ansible_hostname }}</span></p>
+        <p><strong>IP Address:</strong> <br><span class="metric">{{ ansible_default_ipv4.address | default('Public IP') }}</span></p>
+        <p><strong>Environment:</strong> <br><span class="metric">Amazon Linux 2023 (Public Subnet)</span></p>
+    </div>
+</body>
+</html>
