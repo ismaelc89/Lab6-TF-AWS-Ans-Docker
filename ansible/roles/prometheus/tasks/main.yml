@@ -35,9 +35,18 @@
     - prometheus
     - promtool
 
+- name: Deploy alert_rule configuration file
+  ansible.builtin.copy:
+    src: alert_rules.yml
+    dest: /etc/prometheus/alert_rules.yml
+    owner: prometheus
+    group: prometheus
+    mode: '0644'
+  notify: Restart prometheus
+
 - name: Deploy Prometheus configuration file
-  ansible.builtin.template:
-    src: prometheus.yml.j2
+  ansible.builtin.copy:
+    src: prometheus.yml
     dest: /etc/prometheus/prometheus.yml
     owner: prometheus
     group: prometheus
