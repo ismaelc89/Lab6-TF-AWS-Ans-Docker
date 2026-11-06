@@ -56,4 +56,4 @@
   args:
     executable: /bin/bash
   register: docker_app_cadvisor_run_output
-  changed_when: "'Error' not in cdocker_app_cadvisor_run_output.stderr"
+  changed_when: "'Error' not in docker_app_cadvisor_run_output.stderr"
